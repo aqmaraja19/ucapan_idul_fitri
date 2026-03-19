@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Selamat Hari Raya Idul Fitri 1447 H</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    color:white;
+    background:
+        linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.85)),
+        url('https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&w=1600&q=80');
+    background-size:cover;
+    background-attachment:fixed;
+    background-position:center;
+}
+
+/* SECTION */
+section{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:40px 20px;
+    text-align:center;
+}
+
+/* CARD */
+.card{
+    backdrop-filter:blur(12px);
+    background:rgba(255,255,255,0.05);
+    padding:30px 20px;
+    border-radius:25px;
+    box-shadow:0 0 40px rgba(255,215,0,0.15);
+    max-width:700px;
+    opacity:0;
+    transform:translateY(50px);
+    transition:all 1.2s ease;
+}
+
+.card.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* TEXT */
+h1{
+    font-family:'Playfair Display',serif;
+    font-size:42px;
+    color:gold;
+    margin-bottom:15px;
+}
+
+h2{
+    font-weight:300;
+    font-size: 37px;
+    margin-bottom:10px;
+    color:#ffdf80;
+}
+
+p{
+    font-size:30px;
+    line-height:1.8;
+    min-height:60px;
+}
+
+/* BUTTON */
+button{
+    margin-top:30px;
+    padding:12px 30px;
+    border:none;
+    border-radius:30px;
+    background:linear-gradient(45deg,gold,#ffcc33);
+    color:black;
+    cursor:pointer;
+}
+
+/* LANTERN */
+.lantern{
+    position:fixed;
+    width:30px;
+    opacity:0.5;
+    animation:float 12s linear infinite;
+}
+footer {
+      text-align: center;
+      padding: 20px;
+      background: #00000023;
+      margin-top: 40px;
+      color: #ffffff;
+      width: 100%;
+      margin-bottom: 0;
+    }
+
+.l1{left:15%;}
+.l2{left:45%; animation-delay:4s;}
+.l3{left:75%; animation-delay:8s;}
+
+@keyframes float{
+    0%{top:110%;}
+    100%{top:-10%;}
+}
+@media (max-width: 768px) {
+    h1{font-size: 30px;}
+    h2{font-size: 20px;}
+    section{padding: 10px 20px;}
+    p{font-size: 17px;}
+    footer{font-size: 12px;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- Lantern -->
+<img src="image/lentera.png" class="lantern l1">
+<img src="image/lentera.png" class="lantern l2">
+<img src="image/lentera.png" class="lantern l3">
+
+<!-- SECTION 1 -->
+
+<section>
+<div class="card">
+    <h2 class="typing" data-text="Hai Teman Teman 👋"></h2>
+    <p class="typing" data-text="Tidak terasa Ramadhan tahun ini cepat berlalu.<br>Di sini aku cuma mau bilang."></p>
+</div>
+</section>
+
+<!-- SECTION 2 -->
+
+<section>
+<div class="card">
+    <h1 class="typing" data-text="🌙 Selamat Hari Raya Idul Fitri"></h1>
+    <h2 class="typing" data-text="1 Syawal 1447 Hijriah ✨"></h2>
+</div>
+</section>
+
+<!-- SECTION 3 -->
+<section>
+<div class="card">
+    <h2 class="typing" data-text="Minal Aidzin Walfaizin"></h2>
+    
+    <p class="typing" data-text="Mohon Maaf Lahir dan Batin.<br>
+        Jika Aku ada Salah atau Khilaf, tolong di maafkan ya 🙏<br>
+        Semoga kita Semua bisa menjadi Lebih Baik di Tahun Tahun Berikutnya."></p>
+</div>
+</section>
+
+<!-- SECTION 4 -->
+<section>
+<div class="card">
+    <h2 class="typing" data-text="Taqabbalallahu Minna Wa Minkum"></h2>
+    <p class="typing" data-text="Semoga amal Ibadah Kita Semua selama Bulan Ramadhan ini di Terima oleh Allah SWT 🤍"></p>
+    <button onclick="playTakbir()">Putar Takbir 🎵</button>
+</div>
+</section>
+
+<audio id="takbir">
+<source src="sounds/takbir.aac">
+</audio>
+
+<script>
+// MULTI CARD REVEAL + MULTI TYPING
+const cards = document.querySelectorAll(".card");
+
+const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+        if(entry.isIntersecting){
+            const card = entry.target;
+            card.classList.add("show");
+
+            const elements = card.querySelectorAll(".typing");
+
+            elements.forEach((el,index)=>{
+                if(!el.classList.contains("done")){
+                    setTimeout(()=>{
+                        typeText(el);
+                    }, index * 500);
+                }
+            });
+        }
+    });
+},{ threshold:0.4 });
+
+cards.forEach(card => observer.observe(card));
+
+function typeText(el){
+    const html = el.getAttribute("data-text");
+    let i = 0;
+    el.classList.add("done");
+
+    function typing(){
+        if(i < html.length){
+            if(html.substring(i, i+4) === "<br>"){
+                el.innerHTML += "<br>";
+                i += 4;
+            } else {
+                el.innerHTML += html.charAt(i);
+                i++;
+            }
+            setTimeout(typing, 30);
+        }
+    }
+    typing();
+}
+
+function playTakbir(){
+    document.getElementById("takbir").play();
+}
+</script>
+
+</body>
+<footer>
+  Di desain oleh: Aqmar Aja 19<br>
+  Dengan bantuan: ChatGPT
+</footer>
+</html>
